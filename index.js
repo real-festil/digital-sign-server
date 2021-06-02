@@ -6,8 +6,9 @@ const port = process.env.PORT || 3000
 
 app.post('/sign', (req, res) => {
   try {
-    const {pk} = req.body;
+    const {pk} = req;
     console.log('req', req.body);
+    console.log(`pk`, pk)
     console.log(req.files)
     const file = req.files.file;
     const ds = digitalSign.signFile(pk, file);
