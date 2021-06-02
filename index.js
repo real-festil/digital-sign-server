@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const digitalSign= require('digital-signing');
 
-const port = 3000
+const port = process.env.PORT || 3000
 
 app.get('/sign', (req, res) => {
   const {pk, file} = req;
