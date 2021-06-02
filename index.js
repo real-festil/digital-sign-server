@@ -8,6 +8,7 @@ app.post('/sign', (req, res) => {
   try {
     const {pk, file} = req;
     const ds = digitalSign.signFile(pk, file);
+    console.log(`ds`, ds)
     res.send(JSON.stringify(ds));
   } catch (err) {
     res.send(err.toString());
