@@ -16,7 +16,7 @@ const jsonParser = bodyParser.json()
 
 app.post('/sign', jsonParser, (req, res) => {
   try {
-    const {pk} = req;
+    const {pk} = req.body;
     console.log('req', req.body);
     console.log(`pk`, pk)
     console.log(req.files)
