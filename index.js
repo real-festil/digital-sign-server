@@ -2,17 +2,19 @@ const express = require('express')
 const app = express()
 const digitalSign= require('digital-signing');
 const bodyParser = require('body-parser');
+const fileupload = require('express-fileupload');
 
 const port = process.env.PORT || 3000
 
-app.use(bodyParser.json());
+app.use(fileupload());
+const jsonParser = bodyParser.json()
 
 // app.use(function (req, res, next) {
 //   console.log('populated' req.body) // populated!
 //   next();
 // })
 
-app.post('/sign', (req, res) => {
+app.post('/sign', jsonParser, (req, res) => {
   try {
     const {pk} = req;
     console.log('req', req.body);
