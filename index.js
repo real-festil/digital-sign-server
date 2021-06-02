@@ -5,12 +5,12 @@ const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000
 
-app.use(bodyParser());
+app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
-  console.log('populated' req.body) // populated!
-  next();
-})
+// app.use(function (req, res, next) {
+//   console.log('populated' req.body) // populated!
+//   next();
+// })
 
 app.post('/sign', (req, res) => {
   try {
