@@ -6,7 +6,7 @@ import * as path from 'path';
 @Injectable()
 export class AppService {
   async writeCert(buffer) {
-    const certPath = path.resolve(`../temp-certificates/${Date.now()}.p12`);
+    const certPath = path.resolve(`temp-certificates/${Date.now()}.p12`);
     await fs.promises.writeFile(certPath, buffer);
     return certPath;
   }
@@ -27,7 +27,7 @@ export class AppService {
     const certPath = await this.writeCert(publicKeyBuffer);
 
     const result = digitalSign.verifyFile(
-      publicKeyBuffer,
+      certPath,
       password,
       signature,
       fileBuffer,

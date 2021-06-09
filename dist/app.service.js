@@ -13,7 +13,7 @@ const fs = require("fs");
 const path = require("path");
 let AppService = class AppService {
     async writeCert(buffer) {
-        const certPath = path.resolve(`../temp-certificates/${Date.now()}.p12`);
+        const certPath = path.resolve(`temp-certificates/${Date.now()}.p12`);
         await fs.promises.writeFile(certPath, buffer);
         return certPath;
     }
@@ -28,7 +28,7 @@ let AppService = class AppService {
     }
     async verifyFile(publicKeyBuffer, password, signature, fileBuffer) {
         const certPath = await this.writeCert(publicKeyBuffer);
-        const result = digitalSign.verifyFile(publicKeyBuffer, password, signature, fileBuffer);
+        const result = digitalSign.verifyFile(certPath, password, signature, fileBuffer);
         await this.rmCert(certPath);
         return result;
     }
