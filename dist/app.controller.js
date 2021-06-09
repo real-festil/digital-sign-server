@@ -23,11 +23,11 @@ let AppController = class AppController {
     getHello() {
         return 'Hello World!';
     }
-    signFile({ privateKey: [privateKey], file: [file] }) {
-        return this.appService.signFile(privateKey.buffer.toString(), file.buffer);
+    signFile({ privateKey: [privateKey], file: [file] }, password) {
+        return this.appService.signFile(privateKey.buffer, password, file.buffer);
     }
-    verifyFile({ publicKey: [publicKey], file: [file] }, signature) {
-        return this.appService.verifyFile(publicKey.buffer.toString(), signature, file.buffer);
+    verifyFile({ publicKey: [publicKey], file: [file] }, password, signature) {
+        return this.appService.verifyFile(publicKey.buffer, password, signature, file.buffer);
     }
 };
 __decorate([
@@ -43,8 +43,9 @@ __decorate([
     ])),
     common_1.Post('sign'),
     __param(0, common_1.UploadedFiles()),
+    __param(1, common_1.Body('password')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "signFile", null);
 __decorate([
@@ -54,9 +55,10 @@ __decorate([
     ])),
     common_1.Post('verify'),
     __param(0, common_1.UploadedFiles()),
-    __param(1, common_1.Body('signature')),
+    __param(1, common_1.Body('password')),
+    __param(2, common_1.Body('signature')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "verifyFile", null);
 AppController = __decorate([

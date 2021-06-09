@@ -1,4 +1,6 @@
 export declare class AppService {
-    signFile(privateKey: any, fileBuffer: any): Promise<any>;
-    verifyFile(publicKey: any, signature: any, fileBuffer: any): Promise<any>;
+    writeCert(buffer: any): Promise<string>;
+    rmCert(certPath: any): Promise<void>;
+    signFile(privateKeyBuffer: any, password: any, fileBuffer: any): Promise<any>;
+    verifyFile(publicKeyBuffer: any, password: any, signature: any, fileBuffer: any): Promise<any>;
 }

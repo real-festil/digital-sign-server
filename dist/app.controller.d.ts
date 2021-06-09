@@ -6,9 +6,9 @@ export declare class AppController {
     signFile({ privateKey: [privateKey], file: [file] }: {
         privateKey: [any];
         file: [any];
-    }): Promise<any>;
+    }, password: any): Promise<any>;
     verifyFile({ publicKey: [publicKey], file: [file] }: {
         publicKey: [any];
         file: [any];
-    }, signature: any): Promise<any>;
+    }, password: any, signature: any): Promise<any>;
 }

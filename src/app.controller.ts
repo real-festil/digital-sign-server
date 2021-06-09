@@ -25,8 +25,11 @@ export class AppController {
     ]),
   )
   @Post('sign')
-  signFile(@UploadedFiles() { privateKey: [privateKey], file: [file] }) {
-    return this.appService.signFile(privateKey.buffer.toString(), file.buffer);
+  signFile(
+    @UploadedFiles() { privateKey: [privateKey], file: [file] },
+    @Body('password') password,
+  ) {
+    return this.appService.signFile(privateKey.buffer, password, file.buffer);
   }
 
   @UseInterceptors(
@@ -38,10 +41,12 @@ export class AppController {
   @Post('verify')
   verifyFile(
     @UploadedFiles() { publicKey: [publicKey], file: [file] },
+    @Body('password') password,
     @Body('signature') signature,
   ) {
     return this.appService.verifyFile(
-      publicKey.buffer.toString(),
+      publicKey.buffer,
+      password,
       signature,
       file.buffer,
     );

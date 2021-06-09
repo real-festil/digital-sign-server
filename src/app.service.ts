@@ -1,13 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import * as digitalSign from 'digital-signing';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class AppService {
-  async signFile(privateKey, fileBuffer) {
-    return digitalSign.signFile(privateKey, fileBuffer);
+  async writeCert(buffer) {
+    const certPath = path.resolve(`../temp-certificates/${Date.now()}.p12`);
+    await fs.promises.writeFile(certPath, buffer);
+    return certPath;
   }
 
-  async verifyFile(publicKey, signature, fileBuffer) {
-    return digitalSign.verifyFile(publicKey, signature, fileBuffer);
+  rmCert(certPath) {
+    return fs.promises.rm(certPath);
+  }
+
+  async signFile(privateKeyBuffer, password, fileBuffer) {
+    const certPath = await this.writeCert(privateKeyBuffer);
+    const result = digitalSign.signFile(certPath, password, fileBuffer);
+
+    await this.rmCert(certPath);
+    return result;
+  }
+
+  async verifyFile(publicKeyBuffer, password, signature, fileBuffer) {
+    const certPath = await this.writeCert(publicKeyBuffer);
+
+    const result = digitalSign.verifyFile(
+      publicKeyBuffer,
+      password,
+      signature,
+      fileBuffer,
+    );
+
+    await this.rmCert(certPath);
+
+    return result;
   }
 }

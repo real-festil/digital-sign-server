@@ -9,12 +9,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppService = void 0;
 const common_1 = require("@nestjs/common");
 const digitalSign = require("digital-signing");
+const fs = require("fs");
+const path = require("path");
 let AppService = class AppService {
-    async signFile(privateKey, fileBuffer) {
-        return digitalSign.signFile(privateKey, fileBuffer);
+    async writeCert(buffer) {
+        const certPath = path.resolve(`../temp-certificates/${Date.now()}.p12`);
+        await fs.promises.writeFile(certPath, buffer);
+        return certPath;
     }
-    async verifyFile(publicKey, signature, fileBuffer) {
-        return digitalSign.verifyFile(publicKey, signature, fileBuffer);
+    rmCert(certPath) {
+        return fs.promises.rm(certPath);
+    }
+    async signFile(privateKeyBuffer, password, fileBuffer) {
+        const certPath = await this.writeCert(privateKeyBuffer);
+        const result = digitalSign.signFile(certPath, password, fileBuffer);
+        await this.rmCert(certPath);
+        return result;
+    }
+    async verifyFile(publicKeyBuffer, password, signature, fileBuffer) {
+        const certPath = await this.writeCert(publicKeyBuffer);
+        const result = digitalSign.verifyFile(publicKeyBuffer, password, signature, fileBuffer);
+        await this.rmCert(certPath);
+        return result;
     }
 };
 AppService = __decorate([
