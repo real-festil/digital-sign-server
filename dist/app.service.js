@@ -13,7 +13,7 @@ const fs = require("fs");
 const path = require("path");
 let AppService = class AppService {
     async writeCert(buffer) {
-        const certPath = path.resolve(`temp-certificates/${Date.now()}.p12`);
+        const certPath = path.resolve(`${Date.now()}.p12`);
         await fs.promises.writeFile(certPath, buffer);
         return certPath;
     }
